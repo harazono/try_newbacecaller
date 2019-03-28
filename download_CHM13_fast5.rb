@@ -1,16 +1,14 @@
-#! /usr/bin/ruby
+#! /usr/bin/env ruby
 require 'parallel'
 require 'csv'
-
 filename = "links.csv"
 rawdata = CSV.read(filename, headers:false)
 links = Hash.new()
 rawdata.each{|i|
   links[i[0].to_i] = i[1]
 }
-Parallel.each(1..links.size){|i|
-  
-
+Parallel.each(1..links.size, in_threads: 24){|i|
+	`wget #{links[i - 1]} -P /gluster/harazono/CHM13/FAST5/`
 }
 
 
